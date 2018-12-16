@@ -18,6 +18,8 @@
   "homepage": "https://github.com/hidroo/js-advanced-project#readme",
   "dependencies": {
     "express": "^4.16.4",
-    "mustache-express": "^1.2.8"
+    "mustache-express": "^1.2.8",
+    "pg": "^6.4.1",
+    "sequelizer": "^1.1.3"
   }
 }
