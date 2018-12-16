@@ -2,8 +2,8 @@ const Router = require('express').Router;
 
 const startMenuRouter = Router();
 
-startMenuRouter.get('/',(request, response)=> {
-  response.render("startmenu/index");
+startMenuRouter.get('/',(req, res)=> {
+  res.render("startmenu/index");
 });
 
 startMenuRouter.post('/', (req, res)=> {
