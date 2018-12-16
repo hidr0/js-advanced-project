@@ -1,0 +1,19 @@
+{
+  "name": "multi_player_snake",
+  "version": "1.0.0",
+  "description": "A project for our Advanced Javascript Course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hidroo/js-advanced-project.git"
+  },
+  "author": "Mihail Kirilov, Dimitar Lukanov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hidroo/js-advanced-project/issues"
+  },
+  "homepage": "https://github.com/hidroo/js-advanced-project#readme"
+}
