@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/hidroo/js-advanced-project/issues"
   },
-  "homepage": "https://github.com/hidroo/js-advanced-project#readme"
+  "homepage": "https://github.com/hidroo/js-advanced-project#readme",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
 }
