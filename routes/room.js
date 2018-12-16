@@ -11,7 +11,7 @@ roomRouter.get('/', (req, res) => {
 })
 
 roomRouter.get('/:id', (request, res) => {
-  res.sendFile(path.join(__dirname, '../', 'views/rooms/show.html'));
+  res.render('rooms/show');
 });
 
 module.exports.roomRouter = roomRouter;
