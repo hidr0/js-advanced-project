@@ -5,7 +5,9 @@ var io = require('socket.io')(http);
 const bodyParser = require("body-parser");
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
 const mustacheExpress = require('mustache-express');
 
@@ -28,34 +30,31 @@ app.get('/', function (req, res) {
 
 let rooms = {};
 
+function updateUsersInRoom(room) {
+    for (var key in room) {
+        room.hasOwnProperty(key) &&
+            room[key].emit('updateUsersInRoom', Object.keys(room));
+    }
+}
+
+function addUserToRoom(rooms, param, socket) {
+    rooms[param['roomName']];
+    rooms[param['roomName']] || (rooms[param['roomName']] = {});
+    const userName = param['userName'];
+    rooms[param['roomName']][userName] = socket;
+    return rooms[param['roomName']];
+}
 io.on('connection', function (socket) {
     console.log('a user connected');
-    socket.on('disconnect', function (socket) {
-        console.log('user disconnected');
+    socket.on('disconnect', function () {
+        // Need to find a way to know the sockets room in order to disconnect
     });
 
     socket.on('enteringRoom', function (params) {
-        roomName = params['roomName'];
-        userName = params['userName'];
-        newJoinedUser = {
-            userName: userName,
-            socket: socket
-        };
-
-        if (rooms[roomName] === undefined) {
-            rooms[roomName] = [newJoinedUser];
-        } else {
-            rooms[roomName].push(newJoinedUser);
-        }
+        const room = addUserToRoom(rooms, params, socket);
         console.log(rooms);
-
-        rooms[roomName].forEach((user) => {
-            user['socket'].emit('userJoined', {
-                userName: newJoinedUser['userName']
-            })
-        })
-
-
+        updateUsersInRoom(room);
+        console.log(rooms);
     })
 });
 

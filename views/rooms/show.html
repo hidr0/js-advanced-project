@@ -25,8 +25,8 @@
             userName: makeid()
         });
 
-        socket.on('userJoined', function (data) {
-            console.log(data['userName']);
+        socket.on('updateUsersInRoom', function (users) {
+            console.log(users);
         });
     </script>
 </body>
