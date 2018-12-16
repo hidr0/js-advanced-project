@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Socket.IO chat</title>
+</head>
+
+<body>
+    <h1>Room</h1>
+
+    <p id="name"></p>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        function makeid() {
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+            for (var i = 0; i < 5; i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
+            return text;
+        }
+        socket.emit('enteringRoom', {
+            roomName: 'asdadsadas',
+            userName: makeid()
+        });
+
+        socket.on('userJoined', function (data) {
+            console.log(data['userName']);
+        });
+    </script>
+</body>
+
+</html>

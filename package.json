@@ -20,6 +20,7 @@
     "express": "^4.16.4",
     "mustache-express": "^1.2.8",
     "pg": "^6.4.1",
-    "sequelizer": "^1.1.3"
+    "sequelizer": "^1.1.3",
+    "socket.io": "^2.2.0"
   }
 }
