@@ -18,6 +18,8 @@
   "homepage": "https://github.com/hidroo/js-advanced-project#readme",
   "dependencies": {
     "express": "^4.16.4",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "mustache-express": "^1.2.8"
+
   }
 }

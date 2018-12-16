@@ -2,8 +2,12 @@ const Router = require('express').Router;
 
 const startMenuRouter = Router();
 
-startMenuRouter.get('/',(request, response)=> {
-  response.send("Should contain a username field and a continue button");
+startMenuRouter.get('/',(req, res)=> {
+  res.render("startmenu/index");
+});
+
+startMenuRouter.post('/', (req, res)=> {
+  res.send(req.body["name"])
 });
 
 

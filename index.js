@@ -2,6 +2,18 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+const bodyParser = require("body-parser");
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+
+const mustacheExpress = require('mustache-express');
+
+app.engine('mustache', mustacheExpress());
+
+app.set('views', './views');
+app.set('view engine', 'mustache')
+
 const roomRouter = require('./routes/room').roomRouter;
 const lbRouter = require('./routes/leaderboard').lbRouter;
 const startmenuRouter = require('./routes/startmenu').startMenuRouter;
