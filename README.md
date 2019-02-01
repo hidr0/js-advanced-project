@@ -2,10 +2,11 @@
 This is our project, yo
 
 
-To initialize the database:
-
+# Setting up the database:
 $ psql postgres
 
-# CREATE DATABASE multisnake;
-# CREATE USER dummy with encrypted password '123456';
-# GRANT ALL PRIVILEGES ON DATABASE multisnake TO dummy;
+\# CREATE DATABASE multisnake;
+
+\# CREATE USER dummy with encrypted password '123456';
+
+\# GRANT ALL PRIVILEGES ON DATABASE multisnake TO dummy;

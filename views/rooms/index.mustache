@@ -1,0 +1,20 @@
+<p>These are all the rooms in the lobby</p>
+<head>
+  <body>
+    <table>
+        <tr>
+          <th>Room ID</th>
+          <th>Players</th>
+          <th></th>
+        </tr>
+        {{#rooms}}
+        <tr>
+          <td>{{id}}</td>
+          {{#players}}
+          <td>{{.}}</td>
+          {{/players}}
+        </tr>
+        {{/rooms}}
+    </table>
+  </body>
+</head>

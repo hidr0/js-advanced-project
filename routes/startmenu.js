@@ -9,8 +9,8 @@ startMenuRouter.get('/', (req, res) => {
 
 startMenuRouter.post('/', (req, res) => {
   userName = req.body["name"];
-  User.create({ name: userName })
-    .then(() => res.send(userName))
+  User.findOrCreate({where: { name: userName }})
+    .spread((user, created) => res.redirect("/rooms?user="+user.id))
     .catch(error => res.send(error["errors"]));
 });
 

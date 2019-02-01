@@ -15,6 +15,7 @@ sequelize
 
 sequelize.models = {
     User: require('../models/user')(sequelize, Sequelize),
+    Room: require('../models/room')(sequelize, Sequelize)
 };
 
 sequelize.sync().then(()=>{
