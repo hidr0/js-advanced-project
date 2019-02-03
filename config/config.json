@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "dummy",
+    "password": "123456",
+    "database": "multisnake_development",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}

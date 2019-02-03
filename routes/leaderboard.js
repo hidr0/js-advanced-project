@@ -1,13 +1,12 @@
-const Router = require('express').Router;
-const User = require('../db/schema').models.User;
+const Router = require("express").Router;
+const User = require("../models/index").user;
 
 const lbRouter = Router();
 
 lbRouter.get('/', (req, res) => {
   
-  User.findAll({order: [['score', 'DESC']]}).then((users) => {
-    users = users.map(u => [u.name, u.score]);
-    res.render('leaderboard/index',
+  User.findAll({order: [["score", "DESC"]]}).then((users) => {
+    res.render("leaderboard/index",
     {
       users: users,
     });

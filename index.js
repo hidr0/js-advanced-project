@@ -24,10 +24,6 @@ app.use('/', startmenuRouter);
 app.use('/rooms', roomRouter);
 app.use('/leaderboard', lbRouter);
 
-app.get('/', function (req, res) {
-    res.send("Index")
-});
-
 let rooms = {};
 
 function updateUsersInRoom(room) {

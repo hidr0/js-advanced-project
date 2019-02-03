@@ -1,16 +1,19 @@
-var Room = require ('./room');
-module.exports = function(sequelize, DataTypes){
-  var User = sequelize.define('user', {
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('user', {
     name: {
       type: DataTypes.STRING,
       allowNull: false
     },
-
     score: {
       type: DataTypes.INTEGER,
-      default: 0,
+      default: 0
+    },
+    highscore: {
+      type: DataTypes.INTEGER,
+      default: 0
     }
   });
-  // User.belongsTo(Room(sequelize, DataTypes));
+  User.associate = function(models) {
+  };
   return User;
-}
+};

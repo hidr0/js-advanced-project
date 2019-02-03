@@ -1,37 +1,30 @@
-const Router = require('express').Router;
-const Room = require('../db/schema').models.Room;
-const User = require('../db/schema').models.User;
-const path = require('path')
+const Router = require("express").Router;
+const Room = require("../models/index").room;
+const User = require("../models/index").user;
 const roomRouter = Router();
 
-roomRouter.get('/', (req, res) => {
-  let userId = req.query.user;
-  // Room.create();
-  // Room.create();
-  // Room.create();
-  // Room.create();
-  // Room.create();
-
-  Room.findAll({order: ['id']}).then((rooms) => {
-    User.find({id: userId}).then((user) => {
-      console.log(user);
-      console.log(rooms[0]);
-      rooms[0].setPlayers(user).then((a)=>{
-        console.log(a);
-        console.log("As");
-      })
-      // rooms[0].setPlayers(user).then((a) => {
-        // console.log(a);
-      //   rooms = rooms.map(room => [room.id, room.players]);
-      //   res.render('rooms/index',{rooms: rooms});
-      // });
-      // rooms[0].addPlayer(user).then(()=> console.log())
+roomRouter.get("/", (req, res) => {
+  let userName = req.query.user;
+  
+  Room.findAll({order: ["id"]}).then((rooms) => {
+    let roomsUserCount = rooms.map(room => {
+      return room.countPlayers().then(result => result);
+    });
+    Promise.all(roomsUserCount).then(ruc => {
+      roomsIdsAndUserCount = rooms.map((room, i) => {
+        return { id: room.id,
+          pc: ruc[i]
+        };
+      });
+      res.render("rooms/index",{
+        roomsIdsAndUserCount: roomsIdsAndUserCount,
+        userName: userName});
+      });  
     });
   });
-});
-
-roomRouter.get('/:id/join', (rq,res) => {
-
-});
-
-module.exports.roomRouter = roomRouter;
+  
+  roomRouter.get("/:id/join", (rq,res) => {
+    
+  });
+  
+  module.exports.roomRouter = roomRouter;
