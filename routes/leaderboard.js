@@ -1,7 +1,9 @@
-const Router = require("express").Router;
-const User = require("../models/index").user;
+'use strict';
+const lbRouter = require("express").Router();
 
-const lbRouter = Router();
+const db = require("../models/index");
+const User = db.user;
+
 
 lbRouter.get('/', (req, res) => {
   

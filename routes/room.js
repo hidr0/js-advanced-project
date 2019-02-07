@@ -1,7 +1,8 @@
-const Router = require("express").Router;
-const Room = require("../models/index").room;
-const User = require("../models/index").user;
-const roomRouter = Router();
+'use strict';
+const roomRouter = require("express").Router();
+
+const db = require("../models/index");
+const Room = db.room;
 
 roomRouter.get("/", (req, res) => {
   let userName = req.query.user;
@@ -11,7 +12,7 @@ roomRouter.get("/", (req, res) => {
       return room.countPlayers().then(result => result);
     });
     Promise.all(roomsUserCount).then(ruc => {
-      roomsIdsAndUserCount = rooms.map((room, i) => {
+      let roomsIdsAndUserCount = rooms.map((room, i) => {
         return { id: room.id,
           pc: ruc[i]
         };
