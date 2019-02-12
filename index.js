@@ -105,6 +105,19 @@ io.on('connection', function (socket) {
         sendUsersToRoom(room);
         informUserAbout(room, "entered the room.", params.userName);
     })
+
+    socket.on('keyPress', function(params){
+        const KEYS = { 38: "UP", 40: "DOWN", 37: "LEFT", 39: "DOWN" };
+        const roomId = params.roomId;
+        const playerName = params.userName;
+
+        const room = socketRooms[roomId]
+        const players = Object.getOwnPropertyNames(room);
+        players.forEach(player =>{
+            room[player].emit('userPressedKey', playerName, KEYS[params.keyCode])
+        })
+
+    })
 });
 
 http.listen(3000, function () {
@@ -115,11 +128,3 @@ http.listen(3000, function () {
         });
     });
 });
-
-// vP2R8ac9XpiOl9arAAAB
-// vP2R8ac9XpiOl9arAAAB
-
-// KUK7bRjBtNzD65T-AAAC
-
-
-// PO8X11x4wPB0KvyDAAAA

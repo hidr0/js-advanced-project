@@ -21,7 +21,7 @@
         
         socket.emit('enteringRoom', {
             roomId: {{roomId}},
-            userName: {{userName}}
+            userName: "{{userName}}"
         });
 
         socket.on('updateUsersInRoom', function (users) {
@@ -30,6 +30,14 @@
                 table.removeChild(table.firstChild);
             }
             users.forEach(user => {
+                const parentDiv = document.createElement("div");
+                const keyPressDiv = document.createElement("div");
+                keyPressDiv.id = `${user}`;
+                keyPressDiv.innerHTML = `<p>${user}: </p>`;
+                parentDiv.appendChild(keyPressDiv);
+                document.getElementsByTagName("body")[0].appendChild(parentDiv);
+                
+                
                 let trNode = document.createElement("tr");
                 let tdNode = document.createElement("td");
                 tdNode.textContent = user;
@@ -40,6 +48,25 @@
 
         socket.on('informUserForOtherUserActicity', function(userName, action) {
             alert(`User: ${userName} ${action}`);
+        });
+
+        socket.on('userPressedKey', function(userName, key){
+            const div = document.getElementById(userName);
+            const pTag = document.createElement("p");
+            pTag.innerText = key;
+            div.appendChild(pTag);
+        })
+
+        document.addEventListener('keydown', function(event) {
+            
+            if(event.which >= 37 && event.which <= 40){
+                console.log(event.which);
+                socket.emit('keyPress',{
+                    userName: "{{userName}}",
+                    roomId: {{roomId}},
+                    keyCode: event.which
+                });
+            }
         });
     </script>
 </body>
