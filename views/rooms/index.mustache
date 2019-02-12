@@ -1,6 +1,7 @@
 <p>These are all the rooms in the lobby</p>
 <head>
   <body>
+  <h1> User: {{userName}} </h1>
     <table>
         <tr>
           <th>Room ID</th>
@@ -12,7 +13,7 @@
           <td>{{id}}</td>
           <td>{{pc}}</td>
           <td>
-            <form action="/rooms/">
+            <form action="/rooms/{{id}}/join">
               <input type="hidden" name="userName" value={{userName}}>
               <input type="submit" value="Join Game" />
             </form>

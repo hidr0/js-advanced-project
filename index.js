@@ -2,6 +2,8 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+const db = require("./models/index");
+const Room = db.room;
 
 const bodyParser = require("body-parser");
 
@@ -57,4 +59,11 @@ io.on('connection', function (socket) {
 
 http.listen(3000, function () {
     console.log('listening on *:3000');
+    Room.findAll({order: ["id"]}).then((rooms) => {
+        rooms.forEach(room =>{
+            room.setPlayers([]).then( associatedPlayers =>{
+                console.log(associatedPlayers);
+            });
+        });
+    });
 });
