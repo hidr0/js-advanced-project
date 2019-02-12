@@ -7,25 +7,39 @@
 
 <body>
     <h1> User: {{userName}} </h1>
-    <p id="name"></p>
+    <p>Playing snake game</p>
+    <table id="playersTable">
+        <tr>
+          <th>PlayerID</th>
+          <th>PlayerName</th>
+        </tr>
+    </table>
+    
     <script src="/socket.io/socket.io.js"></script>
     <script>
         const socket = io();
-
-        function makeid() {
-            var text = "";
-            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-            for (var i = 0; i < 5; i++) text += possible.charAt(Math.floor(Math.random() * possible.length));
-            return text;
-        }
+        
         socket.emit('enteringRoom', {
-            roomName: 'asdadsadas',
-            userName: makeid()
+            roomId: {{roomId}},
+            userName: {{userName}}
         });
 
         socket.on('updateUsersInRoom', function (users) {
-            console.log(users);
+            const table = document.getElementById("playersTable")
+            while(table.firstChild){
+                table.removeChild(table.firstChild);
+            }
+            users.forEach(user => {
+                let trNode = document.createElement("tr");
+                let tdNode = document.createElement("td");
+                tdNode.textContent = user;
+                trNode.appendChild(tdNode);
+                table.appendChild(trNode);
+            })
+        });
+
+        socket.on('informUserForOtherUserActicity', function(userName, action) {
+            alert(`User: ${userName} ${action}`);
         });
     </script>
 </body>

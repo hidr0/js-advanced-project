@@ -27,33 +27,83 @@ app.use('/', startmenuRouter);
 app.use('/rooms', roomRouter);
 app.use('/leaderboard', lbRouter);
 
-let rooms = {};
+let socketRooms = {};
 
-function updateUsersInRoom(room) {
-    for (var key in room) {
-        room.hasOwnProperty(key) &&
-            room[key].emit('updateUsersInRoom', Object.keys(room));
-    }
+function sendUsersToRoom(room){
+    const users = Object.getOwnPropertyNames(room);
+    users.forEach(user => {
+        room[user].emit('updateUsersInRoom', users);
+    });
 }
 
-function addUserToRoom(rooms, param, socket) {
-    rooms[param['roomName']];
-    rooms[param['roomName']] || (rooms[param['roomName']] = {});
-    const userName = param['userName'];
-    rooms[param['roomName']][userName] = socket;
-    return rooms[param['roomName']];
+function informUserAbout(room, action, otherUser){
+    const users = Object.getOwnPropertyNames(room);
+    users.forEach(user => {
+        if (user !== otherUser.toString()){
+            room[user].emit('informUserForOtherUserActicity', otherUser, action);
+        }
+    });
 }
+
+function addUserToRoom(paramsRooms, roomId, currentPlayerName, socket) {
+    paramsRooms[roomId] || (paramsRooms[roomId] = {});
+    paramsRooms[roomId][currentPlayerName] = socket;
+    return paramsRooms[roomId];
+}
+
+function removeUserFromRoom(roomName ,userToRemove){
+    delete socketRooms[roomName][userToRemove];
+    return socketRooms[roomName];
+    
+}
+
+function getRoomFrom(socket){
+    let roomFromSocket = null;
+    const roomNames = Object.getOwnPropertyNames(socketRooms);
+    roomNames.forEach(roomName =>{
+        const playerNames = Object.getOwnPropertyNames(socketRooms[roomName]);
+        playerNames.forEach(playerName => {
+            if(socket == socketRooms[roomName][playerName]){
+                roomFromSocket = {name: roomName, room: socketRooms[roomName]};
+                return;
+            } 
+        })
+    })
+    return roomFromSocket;
+}
+
+
 io.on('connection', function (socket) {
-    console.log('a user connected');
+    
     socket.on('disconnect', function () {
-        // Need to find a way to know the sockets room in order to disconnect
+        socketRooms
+        const roomObj = getRoomFrom(socket);
+        if (roomObj != null){
+            const roomName = roomObj.name;
+            const room = roomObj.room;
+            let leavingPlayer = null;
+            const playerNames = Object.getOwnPropertyNames(room);
+            playerNames.forEach( playerName =>{
+                if(room[playerName] == socket){
+                    leavingPlayer = playerName;
+                    return
+                }
+            })
+            sendUsersToRoom(room);
+            informUserAbout(room, "dissconnected from the room.", leavingPlayer);
+            removeUserFromRoom(roomName, leavingPlayer);
+            Room.findOne({where: {id: roomName}}).then(room =>{
+                room.getPlayers({where: {name: { $not: leavingPlayer}}}).then( players =>{ 
+                    room.setPlayers(players);
+                });
+            });
+        } 
     });
 
     socket.on('enteringRoom', function (params) {
-        const room = addUserToRoom(rooms, params, socket);
-        console.log(rooms);
-        updateUsersInRoom(room);
-        console.log(rooms);
+        const room = addUserToRoom(socketRooms,params.roomId, params.userName , socket);
+        sendUsersToRoom(room);
+        informUserAbout(room, "entered the room.", params.userName);
     })
 });
 
@@ -61,9 +111,15 @@ http.listen(3000, function () {
     console.log('listening on *:3000');
     Room.findAll({order: ["id"]}).then((rooms) => {
         rooms.forEach(room =>{
-            room.setPlayers([]).then( associatedPlayers =>{
-                console.log(associatedPlayers);
-            });
+            room.setPlayers([]);
         });
     });
 });
+
+// vP2R8ac9XpiOl9arAAAB
+// vP2R8ac9XpiOl9arAAAB
+
+// KUK7bRjBtNzD65T-AAAC
+
+
+// PO8X11x4wPB0KvyDAAAA
